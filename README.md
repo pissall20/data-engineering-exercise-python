@@ -46,8 +46,16 @@ You are free to import another libs into the Pipfile, create/delete src files, f
 ### Final notes
 **Please include instructions** about your strategy and important decisions you made. Also please answer the following questions: 
 - How did you meet the needs of a data scientist?
+  - I cleaned the data where I changed strings to respective datatypes
+  - I found duplicate entries
+  - I analyzed the data for difference in multiple rows in the json data, defined database schema and created a data pipeline
 - How did you ensure data quality?
+  - I converted datatypes wherever required and inserted data in correct datatypes in SQL
+  - I did not add duplicate entries in the database by finding duplicate primary keys in the data
 - What would need to change for the solution scale to work with a 10TB dataset with new data arriving each day?
+  - We would need to create a streaming solution on an event based broker like Kafka 
+  - We can use Spark-Streaming to insert batch-wise data from Kafka to SQL
+  - We can distribute the entire process in a distributed computing environment which can cater to 10TB dataset
 
 **Your submission should be a zip file containing your solution and the requested documentation.**
 

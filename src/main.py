@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from datetime import datetime
 
 from db import *
@@ -39,7 +40,6 @@ def create_tables(db_cursor):
         "(" + ",".join([f"{k} {v}" for (k, v) in posts_schema.items()]) + ")"
     votes_query = votes_query + \
         "(" + ",".join([f"{k} {v}" for (k, v) in votes_schema.items()]) + ")"
-    print(votes_query)
     execute_query(db_cursor, posts_query)
     print("Created Posts Table")
     execute_query(db_cursor, votes_query)
@@ -106,6 +106,11 @@ def insert_data(db_cursor, posts_data, votes_data):
 
 
 if __name__ == '__main__':
+    if not len(sys.argv) == 3:
+        raise ValueError("Wrong number of arguments passed")
+
+    posts_file = sys.argv[1]
+    votes_file = sys.argv[2]
     sqlite_db_file = r"warehouse.db"
     if not os.path.exists(sqlite_db_file):
         print(f"Creating database: {sqlite_db_file}")
@@ -116,7 +121,7 @@ if __name__ == '__main__':
 
     create_tables(cursor)
 
-    posts_json = json.load(open('uncommitted/Posts.json'))
-    votes_json = json.load(open('uncommitted/Votes.json'))
+    posts_json = json.load(open(posts_file))
+    votes_json = json.load(open(votes_file))
 
     insert_data(cursor, posts_json, votes_json)
